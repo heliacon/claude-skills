@@ -1,0 +1,4 @@
+scripts/blocklist.txt
+.DS_Store
+tasks/
+evals/results/

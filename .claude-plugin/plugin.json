@@ -1,0 +1,10 @@
+{
+  "name": "craft",
+  "displayName": "Craft",
+  "description": "Skills and agents for building software products end to end: planning, engineering, testing, security, operations, design, product and growth.",
+  "author": { "name": "Heliacon", "url": "https://github.com/heliacon" },
+  "homepage": "https://github.com/heliacon/claude-skills",
+  "repository": "https://github.com/heliacon/claude-skills",
+  "license": "MIT",
+  "keywords": ["skills", "agents", "tdd", "testing", "security", "design", "product", "workflow"]
+}

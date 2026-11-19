@@ -1,0 +1,8 @@
+{
+  "name": "heliacon",
+  "owner": { "name": "Heliacon", "url": "https://github.com/heliacon" },
+  "description": "Heliacon's Claude Code plugins.",
+  "plugins": [
+    { "name": "craft", "source": "./", "description": "Skills and agents for building software products end to end.", "category": "development" }
+  ]
+}
