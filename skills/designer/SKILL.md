@@ -130,6 +130,11 @@ Hand the actual wording to `copywriter`.
 
 1. Build and open the real page, at 375px and at full width, in light and dark if both
    exist. Use a headless browser (for example Playwright) to take full-page screenshots.
+   **A full-page screenshot misses content that reveals on scroll.** Sections that fade or
+   slide in when scrolled into view are captured in their hidden state, so the image shows
+   blank bands that real visitors never see (or hides a reveal that really is broken).
+   Emulate reduced motion if the page honours it, or scroll through the page in steps and
+   wait for animations before capturing. Then check reduced motion still shows everything.
 2. Look at the screenshot against the intent. Then convert it to greyscale and check the
    hierarchy still holds.
 3. Read the browser console. A broken layout often has an error that explains it.
@@ -141,6 +146,12 @@ Hand the actual wording to `copywriter`.
 7. Run an accessibility check on the rendered page. On an existing page, compare against
    a baseline so new issues are not lost among old ones.
 
+**Check components across pages, not one page.** Open the same component on pages from
+different sections (home, a marketing page, docs, the app, a legal page) side by side: header
+and footer, link colour and underline, button styles, heading sizes, spacing. Sections built
+at different times or from different templates drift apart, and docs or legal pages often
+run on a different stylesheet. Report each difference with both locations.
+
 A metric (a Lighthouse score, a contrast checker, a pixel diff) checks one property. It
 cannot tell you the page is good. Render it and look.
 
@@ -151,13 +162,16 @@ Interaction, scroll and responsive behaviour do not show in a still.
 
 Report findings ranked by impact, highest first. For each: what you saw, where, why it
 matters against the intent, and the fix. Then apply the fixes you can make rather than
-leaving a list. Separate taste ("I would prefer") from defects ("the primary action is
+leaving a list, unless the critique is read-only (a review or audit with no licence to
+change the page): then the ranked list with fixes is the deliverable. Separate taste ("I would prefer") from defects ("the primary action is
 below the fold at 375px").
 
 ## Gotchas
 
 - **Restyling a page whose problem is structure.** New colours on a confused page give a
   confused page in new colours.
+- **Trusting a full-page screenshot of an animated page.** Scroll-triggered sections are
+  captured hidden. Scroll through or turn motion off first.
 - **A shared header or footer that each page sizes differently.** Shared parts must own
   their own width and spacing, or every page drifts.
 - **Fixing a pattern with an exception list.** "Hide the border on these five selectors"
@@ -181,3 +195,5 @@ below the fold at 375px").
 - [ ] 375px width with no horizontal page scroll.
 - [ ] Empty, loading and error states rendered and checked.
 - [ ] Screenshots taken after the last change, and the change confirmed visible.
+- [ ] Scroll-revealed content captured in its visible state (reduced motion or scrolled through).
+- [ ] Shared components (header, footer, links, buttons) match across every section of the site.

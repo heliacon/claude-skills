@@ -53,6 +53,30 @@ Boundary: this skill owns people, tasks, flows and interaction states. The
 Combine one qualitative and one quantitative source when the decision is costly.
 When they disagree, the disagreement is the finding: investigate it, do not average it.
 
+## Heuristic walk (no participants)
+
+When there is nobody to test with, walk the product yourself against the heuristics in
+`references/review-checklists.md`. It is a valid review, but a different kind of evidence.
+
+- **Say what it is.** Open the report with: a heuristic walk by one reviewer, no participants,
+  on this date, on these tasks and devices. Findings are predictions of where users will
+  struggle, not observations.
+- **No n-of-N counts.** "1 of 1 reviewers" is not a sample, and "users struggle with" is a
+  claim you did not observe. Write "the label does not say what happens" and rate severity by
+  how likely and how bad the problem would be, with the reason.
+- **Walk real tasks end to end**, at phone and desktop width, by keyboard as well as pointer.
+  Note where you hesitated, backtracked or had to guess, as you would for a participant.
+- **Name what would confirm it.** For each major finding, the test with real users that would
+  confirm or refute it. That is the next round of research.
+
+**Intended pattern or defect?** A product may break a heuristic on purpose: a parody of a bad
+interface, a game that hides information, friction added to stop a costly mistake, a deliberate
+dark pattern shown as satire. Before reporting, find out what is intended (the brief, the style
+guide, the owner). Then report a deliberate pattern only where it leaks out of its intended
+scope: it blocks a real task the user came for (paying, cancelling, finding the contact page,
+accessibility), or a user could take the joke for real and act on it. Label each finding as
+"defect" or "intended, but", so the owner is not asked to fix the design they chose.
+
 ## Interviews
 
 - Recruit people who had the problem recently. A screener question about the last time
@@ -163,7 +187,8 @@ cognitive load, designing onboarding, or classifying features with the Kano mode
 - **Counting a finding from n=5 as a rate.** "60% failed" from 3 of 5 implies a precision
   you do not have. Say "3 of 5".
 - **A heuristic review presented as user research.** An expert review finds likely
-  problems quickly. It is a prediction about users, not an observation of them. Label it.
+  problems quickly. It is a prediction about users, not an observation of them. Label it,
+  and drop participant counts (see "Heuristic walk").
 - **One loud quote driving a roadmap.** Check how many sessions support it before it
   goes into a deck.
 - **Designing the happy path only.** The empty, loading and error states are where new
@@ -176,7 +201,9 @@ cognitive load, designing onboarding, or classifying features with the Kano mode
 Research work is done when:
 
 - [ ] The research question and the decision it informs are written down.
-- [ ] Every finding names its participant count and source sessions.
+- [ ] Every finding names its participant count and source sessions, or the report is
+      labelled a heuristic walk with no participants and carries no counts.
+- [ ] Deliberate patterns are separated from defects, with the source of the intent.
 - [ ] Observation, interpretation and recommendation are kept apart.
 - [ ] Assumed content (on journey maps, job statements) is labelled as assumed.
 - [ ] Limits and open questions are listed.

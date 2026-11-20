@@ -31,6 +31,12 @@ screen, the heuristic, a severity (blocker, major, minor, cosmetic) and a fix.
 10. **Help.** Is task-oriented help findable when it is needed?
 
 Use three reviewers if you can. Each finds a different subset; one reviewer misses a lot.
+With only one, say so in the report and expect gaps; walk each task twice, once as a first-time
+visitor and once as someone returning to finish a job.
+
+Before marking a heuristic broken, check whether the product breaks it on purpose (see
+"Intended pattern or defect?" in the skill). Record the source of the intent next to the
+finding.
 
 ## Cognitive load
 

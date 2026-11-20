@@ -1,6 +1,6 @@
 ---
 name: marketing
-description: Use when positioning a product, building a messaging hierarchy, choosing a go-to-market motion, planning a launch or campaign, picking channels or judging CAC, payback or attribution. Not for writing page copy (use `copywriter`), search mechanics (use `seo-aeo-geo`) or a full financial model (use `financial-modelling`).
+description: Use when positioning a product, building a messaging hierarchy, choosing a go-to-market motion, planning a launch, campaign or press release, picking channels or judging CAC, payback or attribution. Not for writing page copy (use `copywriter`), search mechanics (use `seo-aeo-geo`) or a full financial model (use `financial-modelling`).
 license: MIT
 ---
 
@@ -32,6 +32,12 @@ motions and channels in parallel; adapt them to your situation.
 - Pricing and packaging as product decisions (value metric, tiers, gating): the
   `product-management` skill. The money behind them: the `financial-modelling` skill.
 - Whether to build the product at all: the `product-exploration` skill.
+
+**When positioning does not apply.** Positioning, ICP and GTM motion assume something is being sold
+to a segment. A parody, an art project, a campaign site or a one-off public-interest piece may have
+no buyer, no competitor and no wedge. Say so, skip those sections and keep what still applies: the
+honesty rules, the launch sequence, press readiness and the metric that shows it worked (readers,
+shares, coverage, sign-ups to a list). Do not invent a customer so the template fills.
 
 ## The context doc
 
@@ -135,7 +141,12 @@ content), the moment, after (follow-up proof, case write-ups, the next feature).
 several touches across the sequence.
 
 Read `references/launch-and-campaigns.md` before a launch or a paid campaign. It holds the launch
-readiness gate and the campaign brief template.
+readiness gate, the press release and wire readiness check and the campaign brief template.
+
+**A press release is a public record.** Once it is on a wire service it is copied to many sites and
+cannot be withdrawn. Before it goes: a real, named issuer; a media contact route that someone answers;
+boilerplate that matches the site; only facts that are true and checkable; a way for anyone named in
+it to respond; and a press page that works on a phone.
 
 ## 8. Pricing as a marketing input
 
@@ -179,7 +190,8 @@ channel on last-touch data alone.
 Before a page, campaign or launch ships, show evidence for each line, not a tick:
 
 - [ ] Context doc exists and this work cites it (segment, alternative, proof)
-- [ ] Positioning statement names the five core components (the trend is optional)
+- [ ] Positioning statement names the five core components (the trend is optional), or it is
+      recorded as not applicable, with the reason
 - [ ] Value proposition is one outcome-led sentence; pillars trace to it
 - [ ] Every claim has proof attached, or is marked `[PROOF NEEDED]` and held back
 - [ ] No invented metric, customer, quote or case study (search the draft for numbers and names,

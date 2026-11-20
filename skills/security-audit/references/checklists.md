@@ -5,6 +5,7 @@ repeat in a report.
 
 ## Contents
 - OWASP Top 10 categories
+- Capacity and budget exhaustion
 - Security headers (web)
 - Supply chain (SLSA)
 - Zero-trust checks
@@ -35,6 +36,26 @@ folds server-side request forgery into broken access control).
   repeated failures.
 - **Mishandling of exceptional conditions.** Errors that fail open, partial transactions, exceptions
   that leak state.
+
+## Capacity and budget exhaustion
+
+Any resource with a fixed daily size that callers share: an AI model budget, SMS or email credits,
+a third party's concurrency limit, a free tier quota, disk. For each one:
+
+- [ ] What is the limit keyed on: account, session, API key, address? Can an attacker make more of
+      that key for free (sign-ups, cookies cleared, addresses rotated)?
+- [ ] **Address rotation.** IPv4 addresses are cheap through cloud and proxy pools. IPv6 is worse: a
+      typical allocation is a /64 for one line, often a /56 or /48 for one customer, so a limit per
+      single IPv6 address can be bypassed without limit. Key IPv6 on the /64 at least, and consider
+      a looser limit on the /56 or /48 as well.
+- [ ] Is there a global cap above the per-key limits, so that many keys together cannot drain the
+      budget? Per-key limits alone do not bound the total.
+- [ ] What happens when the budget runs out: a clear message, or a broken page for every user? Does
+      it fail closed (no spend) rather than open?
+- [ ] Is spend alerted before it is exhausted?
+
+Report a drain that needs volume as PLAUSIBLE with the arithmetic (limit per key times keys an
+attacker can get, against the budget), unless a safe test environment can confirm it.
 
 ## Security headers (web)
 

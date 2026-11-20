@@ -29,7 +29,7 @@ positioning document. Voice comes from the project's style guide if one exists.
 |---|---|---|
 | Blank page | Write | The job sentence (below), then the substance |
 | Existing copy to improve | Rewrite | Read it, state what it gets wrong, keep what works |
-| Copy to check | Review | The sweeps (below); return ranked fixes, not a rewrite |
+| Copy to check | Review | The sweeps (below), then the cross-page check; return ranked fixes, not a rewrite |
 
 Do not rewrite when asked to review. Do not review when asked to write.
 
@@ -40,6 +40,11 @@ reading, and the **one action** they should take. If you cannot write it, ask.
 
 ## Voice
 
+- **The project's documented voice overrides this skill's generic rules.** If its style guide
+  deliberately breaks one of the tells below (an in-character claim on a satirical page, a run of
+  exclamation marks on a mock price plan, a superlative that is the joke), that is the voice, not
+  a defect. Do not report it. Report only where the copy breaks the project's own rules, and quote
+  the rule.
 - If the project has a voice or style guide, follow it and quote its rules in your check.
 - If it has none, read the best existing copy and write down 3 to 5 rules it follows
   (sentence length, person, formality, spelling variant, punctuation habits). Use them, and
@@ -91,13 +96,30 @@ Read the draft once per question. Each pass catches what the others miss.
 7. **Safe to act?** What risk stops the reader clicking (cost, commitment, data), and is it
    answered before the button?
 
+## Reviewing a whole site: facts across pages
+
+A sweep of one draft cannot see a contradiction between two pages. When reviewing more than one page,
+list every fact that appears on more than one of them and check they agree:
+
+- **Counts and numbers.** The home page says 40 integrations, the pricing page says 35, the docs list
+  38. Find the true figure and every place it appears.
+- **Names.** The product, plan, feature and company names spelled and capitalised the same way
+  everywhere, including page titles, meta descriptions and the footer.
+- **One metric, one meaning.** A number reused for different things ("10,000 users" as sign-ups on
+  one page, monthly active users on another) is a false claim on at least one page.
+- **Promises.** Trial length, refund terms, limits and response times the same on the marketing page,
+  the pricing page, the terms and the help pages.
+
+Report each disagreement with every location and which one is right, or that nobody can say yet.
+
 ## Tells to cut on sight
 
 unlock, seamless, elevate, empower, supercharge, effortless, revolutionary, game-changing,
 cutting-edge, robust, leverage, "in today's world", "the power of", "take it to the next
 level", "we are excited to", stacked adjectives, exclamation marks in a row, rhetorical
 questions as openers, and dashes used as a rhythm habit. These read as filler, and readers
-now recognise them as machine-written.
+now recognise them as machine-written. A documented voice that uses one on purpose wins (see
+Voice).
 
 ## Pricing pages
 
@@ -135,7 +157,9 @@ notifications or onboarding text, or when copy will be translated.
 - [ ] Job sentence written and every section serves it.
 - [ ] Every claim traced to a named source, or flagged as unsupported.
 - [ ] 2 or 3 options with reasons on each load-bearing line.
-- [ ] All seven sweeps run; tells list clean.
+- [ ] All seven sweeps run; tells list clean, except where the project's voice rules use one on
+      purpose.
+- [ ] For a multi-page review: shared facts (counts, names, metrics, promises) agree across pages.
 - [ ] Voice rules stated and followed.
 - [ ] Draft cut by about a third from the first full version.
 - [ ] Handed over as a draft, with open gaps listed.

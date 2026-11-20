@@ -73,6 +73,33 @@ then main-thread work during interaction and micro-optimisation last. Targets: L
 200ms or less, CLS 0.1 or less at the 75th percentile of real visits. Read `references/performance.md`
 when a page is slow, before adding a heavy dependency or before a launch with performance targets.
 
+## Accessibility
+
+Read `references/accessibility.md` before an accessibility review or before signing off a new page.
+It holds the review method (reflow, keyboard path, focus, scroll regions, target size, motion, skip
+links, names of repeated controls) and how to tell a tool's false positive from a real failure.
+
+## Reviewing an existing site
+
+A review of a built site you did not write, with no change to make, needs a different subset of this
+skill.
+
+- **Lab Web Vitals, headless.** Run Lighthouse from the command line against each key template, not
+  only the home page: `npx lighthouse <url> --only-categories=performance --output=json
+  --chrome-flags="--headless=new"`. Read LCP, CLS and Total Blocking Time from the JSON. TBT stands in
+  for INP, which needs a real interaction and cannot be taken from a page load. Lab runs use
+  simulated throttling, so quote them as lab figures with the date and settings. Field data (a real
+  user report) judges; the lab run explains. Run each page three times and quote the median: one run
+  is noise.
+- **Lazy LCP check.** Find the LCP element (the Lighthouse report names it, or a
+  `PerformanceObserver` for `largest-contentful-paint`) and read its markup. `loading="lazy"` on it is
+  a defect; a missing `fetchpriority="high"` on a hero image is a likely improvement. Check at phone
+  width too: the LCP element often changes with the layout.
+- **Build items that do not apply.** The four async states and URL state are build rules. On a static
+  site with no client data and no filters there is nothing to force, so do not report their absence.
+  Report them only where the site really fetches data or has view state worth sharing.
+- **Accessibility** follows `references/accessibility.md`, on every page in scope.
+
 ## Gotchas
 
 - **Render paths are hot loops.** A component body or computed getter runs on every hover and every
@@ -111,7 +138,8 @@ before adding new tools.
       reviewers a running preview as well as screenshots.
 - [ ] Keyboard only: every control reachable, operable and visibly focused; order matches the visual
       order; no trap.
-- [ ] An automated accessibility audit (axe, Lighthouse or the project's tool) has no new violations.
+- [ ] An automated accessibility audit (axe, Lighthouse or the project's tool) has no new violations,
+      and the manual checks in `references/accessibility.md` were run.
       Contrast checked with a tool: 4.5:1 body text, 3:1 large text and UI component borders (WCAG AA).
 - [ ] Loading, error, empty and data states each shown, by forcing each one.
 - [ ] Shareable state survives refresh and back.

@@ -72,8 +72,39 @@ a `noindex` page or another canonical throws away the consolidation silently.
 **Main content in served HTML.** If body text appears only after client JavaScript runs, it may not
 exist for crawlers that do not render. Check the raw response, not the browser view.
 
+**Response headers are part of the page.** Fetch each key template with `curl -sI` and read the
+headers, not only the HTML. Compression is applied, `X-Robots-Tag` is absent where the page should be
+indexed and `Cache-Control` does not stop the CDN doing its job. A header can come from a CDN rule
+that is in no source file, so the live response is the evidence.
+
 Read `references/technical-seo.md` when auditing status codes, crawl budget, internal linking,
 on-page elements, hreflang, structured data or Core Web Vitals. It holds the detail and thresholds.
+
+## Entity consistency
+
+Engines decide what a business is from every description they can find of it. Make them agree.
+
+- The meta description of the home page, the `Organization` (and product) JSON-LD, `llms.txt`, the
+  about page and the social profiles describe the business in the same terms: same name, same
+  category, same one-line description. One says "a design agency" and another "a software company",
+  and the engine has to guess.
+- One `@id` per entity (for example `https://example.com/#organization`), declared once with its full
+  properties and referenced by that `@id` everywhere else (`publisher`, `brand`, `provider`). A page
+  that redeclares the organisation with different properties creates a second, competing entity.
+- `sameAs` lists only profiles the business really controls.
+
+## A new site, indexed nowhere
+
+A site that no engine has indexed yet cannot appear in any answer, so a query test returns zero
+whatever the content is. That zero measures nothing about the site. Do this instead:
+
+1. Confirm it is indexable (status, robots, `noindex` in HTML and headers, canonicals).
+2. Submit the sitemap to each engine's webmaster console, and use IndexNow for the engines that
+   support it (several do; Google does not).
+3. Record the date of submission. Check indexing with the console's URL inspection, not a `site:`
+   query, which is a rough sample.
+4. Re-run the named queries on dated rounds once pages are indexed, and report each round with its
+   date. Until then report "not yet indexed, not measured", not "not visible".
 
 ## Layer 2: AEO
 
@@ -113,6 +144,8 @@ The unit of value moves from the page to the **passage**. Engines retrieve and q
 | Calling a page "uncrawlable" because your crawler missed it | "Not discovered by this crawl". The engine may have other routes |
 | Reading a 403 or 503 to a bot as a deliberate block | Find the rule. It may be an outage or a bot-protection false positive |
 | Recommending `llms.txt` as a fix | It is a proposal, not an adopted standard, with no evidence major engines use it. Say so, and prefer robots.txt, sitemaps, schema.org and server-rendered content |
+| `llms.txt` and robots.txt that disagree | `llms.txt` points AI tools at paths robots.txt disallows for the same crawlers, or robots.txt blocks `/llms.txt` itself. robots.txt is the rule a compliant crawler obeys; align the two and report the conflict |
+| `Cache-Control: no-transform` left on by default | It tells intermediaries not to change the body. Many CDNs then skip their own compression and optimisation, so an uncompressed origin stays uncompressed. Check `Content-Encoding` on the live response |
 | Crawling with a headless browser as if it were a plain fetcher | Skip non-HTTP schemes (`mailto:`, `tel:`) and disable scripts when measuring bytes served; scripts add their own requests |
 | Re-crawling for each analysis | Crawl once, persist the dated result, run every analysis off that artefact. It is consistent and polite to the target |
 | Optimising meta descriptions for ranking | They are not a ranking factor. They are the snippet. Write them for the click |
@@ -131,9 +164,13 @@ An audit is done when each item below has evidence attached (URL, header or line
 - [ ] Every canonical target resolves to a 200, indexable, self-canonical URL
 - [ ] Priority pages are not orphans
 - [ ] Main content present in the raw HTML (checked with JavaScript off)
+- [ ] Response headers read for each template: compression applied, no stray `X-Robots-Tag`
 - [ ] Structured data checked in both raw and rendered views, matching visible content
+- [ ] One `@id` per entity; meta description, JSON-LD and `llms.txt` describe the business the same way
+- [ ] `llms.txt` (if present) does not point at paths robots.txt disallows
 - [ ] Core Web Vitals taken from field data, not only a lab run
 - [ ] Key answers are self-contained, answer-first passages
-- [ ] Share of voice measured on named queries, engines and dates, with repeat runs
+- [ ] Share of voice measured on named queries, engines and dates, with repeat runs, and only
+      after the pages are confirmed indexed
 - [ ] Each count in the report has checkable examples; each gap your tools could not see says
       "not measured"

@@ -35,6 +35,9 @@ skill. An audit produces findings with evidence, not a feeling of safety.
   verification list is enough.
 - Infrastructure hardening of hosts and networks: use `infrastructure`, then come back here to audit it.
 
+The `security` skill is written for code you are building. A review loads it only for its rules (what
+correct looks like), not for its build steps.
+
 ## Method
 
 Copy this checklist and tick it as you go.
@@ -89,13 +92,17 @@ ways to reach it, then mark which leaves the current controls block.
 - Secrets: history scan, CI config, logs, images (see "Secrets sweep" below).
 - Dependencies and supply chain: lock files, unpinned actions and base images, build scripts.
 - LLM features, if any: read `references/llm-features.md`.
+- Capacity and budget: any shared quota, paid third-party call or daily cap that one caller can drain.
+  Check what the limit is keyed on; see `references/checklists.md` (address rotation).
 - Abuse cases, not only the happy path: wrong user, missing token, tampered payload, replayed request,
   malformed input, huge input, concurrent requests.
 
-Read `references/checklists.md` for the OWASP category list, security headers, supply-chain levels,
-zero-trust checks and where security gates sit in the delivery lifecycle.
+Read `references/checklists.md` for the OWASP category list, capacity and budget exhaustion,
+security headers, supply-chain levels, zero-trust checks and where security gates sit in the delivery
+lifecycle.
 
-**6. Confirm.** Reproduce against a local or staging instance. Exercise the real request: a header in
+**6. Confirm.** Reproduce against a local or staging instance. If production is the only target, read
+"When production is the only target" below first. Exercise the real request: a header in
 config, a middleware in the router or a rule in a WAF proves nothing until you see it fire on the path
 that matters. Route order and early returns bypass controls that read as present.
 
@@ -109,11 +116,37 @@ reachable in the deployed configuration? Drop or downgrade what does not survive
 
 **9. Triage and report.** See below.
 
+## When production is the only target
+
+With written permission and no staging copy, every probe must be harmless if the control it tests is
+broken. Design the probe so that the failure case still does nothing.
+
+- **Probe with input that cannot spend anything.** To test that a paid or rate-limited endpoint
+  rejects a caller, send an empty or invalid body that the endpoint would refuse even with the
+  control missing. The status and headers still show whether the control ran first.
+- **Cross-origin checks with a no-op.** Send a foreign `Origin` with a body that changes nothing (an
+  empty form, a read). The CORS headers or the rejection are the evidence; no state moves.
+- **Budget paid operations.** If a probe must trigger a real paid call (an AI model, an SMS, an email),
+  set the count before you start, keep it small and record each one.
+- **Never volume test.** No load, no flood, no brute force against production. A denial of service
+  that would need volume is reported as **PLAUSIBLE**, not confirmed, with the arithmetic: the limit
+  per key, how many keys an attacker can get (see address rotation in `references/checklists.md`) and the cost per request,
+  against the daily budget. For example, 20 requests per address per day, a /64 of IPv6 addresses
+  each counted separately, against a shared cap of 1,000 calls a day: one attacker drains it.
+- Note every probe you ran with its time, so the owner can match it in their logs.
+
 ## Secrets sweep
 
 1. History: `gitleaks git .` (older gitleaks: `gitleaks detect --source .`) or
    `trufflehog git file://.` (a plain
    `git log -p | grep` misses encoded and split keys and drowns in noise).
+   If neither tool is installed and you cannot install one, fall back to a regex sweep of the full
+   history and state it in the report as partial:
+   ```
+   git log -p --all | grep -nE 'AKIA[0-9A-Z]{16}|BEGIN [A-Z ]*PRIVATE KEY|ghp_[A-Za-z0-9]{36}|sk_live_|xox[baprs]-|(api|secret|token|passw)[a-z_]*\s*[:=]'
+   ```
+   It finds well-known key shapes and obvious assignments only: it misses encoded, split and
+   unfamiliar secrets.
 2. `.env.example` documents every required secret with no real values.
 3. CI config injects secrets from the platform's secret store, never as plaintext YAML, and they are not
    exposed to builds from forks.
@@ -166,6 +199,9 @@ systemic causes (for example "no shared authorisation helper") since they predic
 - **A detector that never fires.** A security check with zero hits across a large real data set may be
   unable to fire at all. Feed it the condition it detects and watch it trigger before counting it.
 
+- **Rate limits keyed on one IPv6 address.** A single customer usually holds a /64 or more, so a
+  per-address limit is no limit. Key on the /64 at least, and cap shared budgets globally.
+
 ## Rationalisations to reject
 
 | Thought | Reality |
@@ -176,6 +212,7 @@ systemic causes (for example "no shared authorisation helper") since they predic
 | "The framework escapes it." | Only in the context it knows. Check this sink. |
 | "I couldn't exploit it, so it's not a bug." | Record it as suspected with the path. Someone else may. |
 | "It's too small to report." | Small findings chain. Report it as Low. |
+| "Only a load test would prove the DoS." | On production, report it PLAUSIBLE with the arithmetic. Do not flood it. |
 
 ## Verification
 

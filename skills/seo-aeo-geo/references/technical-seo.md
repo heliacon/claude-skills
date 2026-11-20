@@ -9,6 +9,7 @@
 6. Structured data
 7. Core Web Vitals
 8. Content quality
+9. Response headers
 
 ## 1. Status codes
 
@@ -61,9 +62,12 @@ canonical to itself and match the final URL. Flag loops and chains.
 ## 5. On-page elements
 
 - **Title**: the strongest on-page relevance signal and a large click-through lever. Unique per page,
-  primary subject first.
+  primary subject first. Aim for about 60 characters: results truncate by pixel width, so put the
+  words that matter in the first 50 or so. A brand suffix goes last.
 - **Headings**: one clear `h1` stating the subject. Headings show structure, not styling.
-- **Meta description**: not a ranking factor. It writes the snippet. Unique per page.
+- **Meta description**: not a ranking factor. It writes the snippet. Unique per page. Between about 50
+  and 160 characters: shorter gives the engine nothing to show, longer is cut. Engines often rewrite
+  it anyway, most often when it does not match the query or the page.
 - **hreflang**: declares language and region variants. Must be reciprocal and self-referencing, and
   each URL must be the canonical of its variant.
 - **Images**: descriptive `alt`, sensible file names, modern formats, explicit dimensions (prevents
@@ -98,3 +102,22 @@ Search engines describe quality through experience, expertise, authoritativeness
 as a lens, not a dial. Ask: does the page satisfy the intent behind the query, how completely
 compared with what already ranks and is there a real, identifiable author or organisation behind
 it? Intrusive interstitials and content buried under ads work against it.
+
+## 9. Response headers
+
+Fetch with the headers a real client sends, for each template and for non-HTML files (PDFs, feeds):
+
+```
+curl -sI -H 'Accept-Encoding: br, gzip' -A '<crawler user agent>' https://example.com/page
+```
+
+| Header | Check |
+|---|---|
+| `Content-Encoding` | `br` or `gzip` on HTML, CSS, JS, JSON and SVG. Absent means uncompressed, whatever the config says. `Vary: Accept-Encoding` alongside it |
+| `Cache-Control` | Sensible lifetimes: long and immutable for fingerprinted assets, short or revalidated for HTML. `no-transform` stops many CDNs compressing or optimising the response; remove it unless something needs the body untouched |
+| `X-Robots-Tag` | Absent, or deliberate. It does what meta robots does and is the only way to `noindex` a PDF or image. A `noindex` here left over from staging removes pages while the HTML looks clean |
+| `Content-Type` | Correct type and `charset=utf-8` for HTML |
+| `Link: rel=canonical` | If present, it agrees with the HTML canonical. When they disagree the engine may ignore both and choose its own |
+
+Compare the same URL through the CDN and, if you can reach it, at the origin. A difference shows
+which layer set the header.

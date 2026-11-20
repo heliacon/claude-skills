@@ -60,10 +60,28 @@ with a history of defects. Do not spend on generated code, framework plumbing or
 
 ## Test plan
 
-Keep it short, in `tasks/test-plan-<phase>.md`. Read `references/test-plan-template.md` for the
+Skip writing the file in a read-only review (an audit of something you may not change): put scope,
+out of scope and approach at the top of the report instead.
+
+Otherwise keep it short, in `tasks/test-plan-<phase>.md`. Read `references/test-plan-template.md` for the
 template when starting a plan. It must answer: in scope, out of scope (with reasons), approach per risk
 tier, environments, test data (synthetic or masked, never raw production personal data), roles, entry
 and exit criteria.
+
+## Live matches the repo
+
+Before testing a deployed system, prove which build you are testing. A defect "fixed in main" may
+never have shipped, and a finding against live may already be fixed in the repo.
+
+1. **Compare a fingerprint.** A version string, commit hash or build id exposed by the live system
+   (a footer, a `/version` endpoint, a header, a comment in the HTML) against the repo. If there is
+   none, fetch one built file (a stylesheet, a script, the HTML of a static page) and compare it byte
+   for byte, or by hash, with a local build of the same commit.
+2. **List what is undeployed.** Commits since the deployed one, and which of them change behaviour
+   you are about to test. Report findings against the build you tested, and say which are already
+   fixed but not shipped.
+3. **Check the plan against both.** Items in the roadmap or todo list marked done but not live, and
+   items still open that the code already does. A stale plan misleads the next person to read it.
 
 ## Diff-aware scope
 
@@ -148,6 +166,7 @@ Functional pass is not quality. Each needs explicit evidence for high-risk areas
 | Internationalisation | Unicode, right-to-left, locale formats, no concatenated strings, room for longer text |
 | Resilience | Timeout, dependency down, partial response, idempotent retry |
 | Compatibility | Target browsers, devices, OS versions, breakpoints |
+| Capacity and quotas | Shared daily budgets and third-party concurrency or rate limits: what the limit is, what one user or many together can use, what the user sees when it is exhausted and whether the message blames the right party (your service, the provider or the user) |
 
 No measured evidence on a high-risk area makes it PARTIAL, not PASS.
 
@@ -195,8 +214,9 @@ descope explicitly or move the date.
 
 Before signing off a phase, every line has evidence:
 
+- [ ] The build under test is identified, and live is shown to match the repo (or the gap is listed)
 - [ ] Risk register exists; depth matches tier
-- [ ] Test plan states in scope and out of scope
+- [ ] Test plan (or the report, in a read-only review) states in scope and out of scope
 - [ ] Each acceptance criterion marked PASS, FAIL or UNTESTED (no silent gaps)
 - [ ] Every defect filed before its fix; closed defects carry root cause and learning
 - [ ] Regression test per fixed defect, shown failing with the fix reverted
